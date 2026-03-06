@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom"
 import SportsApi from "./pages/SportsApi"
-import Layout from "./layouts/layout"
+import Layout from "./layouts/Layout"
 import Index from "./pages/Index"
 
 function App() {
@@ -15,4 +15,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

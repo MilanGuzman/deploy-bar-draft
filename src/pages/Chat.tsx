@@ -1,0 +1,44 @@
+import { useChat } from '@ai-sdk/react'
+
+const Chat = () => {
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading
+  } = useChat({
+    api: '/api/chat',
+    streamProtocol: 'text'
+  })
+
+  return (
+    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
+      <h2>Chat con Base de Datos</h2>
+
+      <div style={{ height: '400px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
+        {messages.map(m => (
+          <div key={m.id} style={{ marginBottom: '10px' }}>
+            <strong>{m.role === 'user' ? 'Tú' : 'ollama'}:</strong>
+            <p>{m.content}</p>
+          </div>
+        ))}
+        {isLoading && <p>Pensando...</p>}
+      </div>
+
+      <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '8px' }}>
+        <input
+          value={input}
+          onChange={handleInputChange}
+          placeholder="ej: ¿Quiénes son los usuarios?"
+          style={{ flex: 1, padding: '8px' }}
+        />
+        <button type="submit" disabled={isLoading}>
+          Enviar
+        </button>
+      </form>
+    </div>
+  )
+}
+
+export default Chat

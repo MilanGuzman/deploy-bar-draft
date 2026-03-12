@@ -51,7 +51,7 @@ export default function ARHud({
 const styles: Record<string, React.CSSProperties> = {
   hud: {
     position: 'fixed',
-    top: 72, // deja espacio para la navbar
+    top: 120, // deja espacio para la navbar
     left: '50%',
     transform: 'translateX(-50%)',
     background: 'rgba(0,0,0,0.6)',

@@ -25,21 +25,15 @@ export default function CameraFeed() {
 
   return (
     <video
-      ref={videoRef}
-      autoPlay
-      playsInline
-      muted
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        // z-index 0: queda DETRÁS de la navbar (que debe tener z-index mayor)
-        zIndex: 0,
-        pointerEvents: 'none', // nunca captura clicks
-      }}
-    />
+  style={{
+    position: 'fixed',
+    top: '50px',  // ← empieza debajo del navbar
+    left: 0,
+    width: '100%',
+    height: `calc(100% - 50px)`,
+    objectFit: 'cover',
+    zIndex: 0,
+  }}
+/>
   )
 }

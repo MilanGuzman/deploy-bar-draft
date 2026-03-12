@@ -7,9 +7,9 @@ interface ARStartScreenProps {
 export default function ARStartScreen({ onStart }: ARStartScreenProps) {
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>🌍 AR World</h2>
+      <h2 style={styles.title}>RA</h2>
       <p style={styles.desc}>
-        Mueve tu cámara para encontrar objetos ocultos cerca de ti
+        Mueve tu cámara/teclas para encontrar objetos cerca de ti
       </p>
       <button style={styles.btn} onClick={onStart}>
         Iniciar experiencia

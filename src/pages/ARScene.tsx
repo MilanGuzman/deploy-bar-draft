@@ -91,7 +91,8 @@ export default function ARScene() {
 const wrapperStyle: React.CSSProperties = {
   position: 'relative',
   width: '100%',
-  height: '100%',
+  height: 'calc(100vh - 50px)',
+   marginTop: '50px',
   minHeight: '100vh',
   background: 'linear-gradient(135deg, #0f0f1a, #1a0f2e)',
   overflow: 'hidden',

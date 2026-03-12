@@ -10,5 +10,5 @@ const RA = () => {
   );
 };
 
-export default RA;
+export default RA; 
 

@@ -4,6 +4,7 @@ const Navbar = () => {
   const navItems = [
     { name: "Inicio", path: "/" },
     { name: "Sports API", path: "/sportsapi" },
+    { name: "ChatBot", path: "/chat"}
     
   ];
   return (

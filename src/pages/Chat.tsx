@@ -1,6 +1,6 @@
 import { useChat } from '@ai-sdk/react'
 
-export function Chat() {
+const Chat = () => {
   const {
     messages,
     input,
@@ -19,7 +19,7 @@ export function Chat() {
       <div style={{ height: '400px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
         {messages.map(m => (
           <div key={m.id} style={{ marginBottom: '10px' }}>
-            <strong>{m.role === 'user' ? ' Tú' : 'ollama'}:</strong>
+            <strong>{m.role === 'user' ? 'Tú' : 'ollama'}:</strong>
             <p>{m.content}</p>
           </div>
         ))}
@@ -30,7 +30,7 @@ export function Chat() {
         <input
           value={input}
           onChange={handleInputChange}
-          placeholder="Pregunta algo, ej: ¿Quiénes son los usuarios?"
+          placeholder="ej: ¿Quiénes son los usuarios?"
           style={{ flex: 1, padding: '8px' }}
         />
         <button type="submit" disabled={isLoading}>
@@ -40,3 +40,5 @@ export function Chat() {
     </div>
   )
 }
+
+export default Chat

@@ -46,6 +46,6 @@ serve({
   port: 3000
 }, () => {
   const model = process.env.OLLAMA_MODEL ?? 'qwen2.5:7b'
-  console.log('🚀 Servidor corriendo en http://localhost:3000')
+  console.log('Servidor corriendo en http://localhost:3000')
   console.log(`Modelo: ${model}`)
 })

@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import type { ChatInputProps } from '../interfaces/chat'
 
+// Linea 27: se deshabilitan el boton Enviar mientras el modelo está respondiendo para no enviar dos veces
 export const ChatInput: FC<ChatInputProps> = ({
   input,
   setInput,

@@ -7,6 +7,7 @@ import type { ChatMessage } from '../interfaces/chat'
 export const useChatSession = () => {
   const [input, setInput] = useState('')
 
+  // Aquí se define que los mensajes del POST en modo streaming
   const {
     messages,
     sendMessage,
@@ -18,6 +19,7 @@ export const useChatSession = () => {
 
   const isLoading = status === 'streaming' || status === 'submitted'
 
+  // Envía el mensaje al backend y limpia el input (no hace nada si está vacío o ya está cargando)
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const text = input.trim()

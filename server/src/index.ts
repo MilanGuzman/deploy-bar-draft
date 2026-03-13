@@ -15,6 +15,16 @@ const app = new Hono()
 
 app.use('*', cors())
 
+app.get('/api/usuarios', async (c) => {
+  try {
+    const data = await (dbTools.getUsuarios.execute as any)({ limit: 3 })
+    return c.json({ usuarios: data })
+  } catch (err) {
+    console.error('Error en /api/usuarios:', err)
+    return c.json({ error: String(err) }, 500)
+  }
+})
+
 app.post('/api/chat', async (c) => {
   try {
     const { messages } = await c.req.json()
@@ -40,6 +50,7 @@ app.post('/api/chat', async (c) => {
     return c.json({ error: String(err) }, 500)
   }
 })
+
 
 serve({
   fetch: app.fetch,

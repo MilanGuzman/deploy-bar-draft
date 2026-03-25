@@ -1,5 +1,5 @@
+import ARScene from "../shared/components/ARScene";
 
-import ARScene from '../components/ARScene';
 
 const RA = () => {
   return (

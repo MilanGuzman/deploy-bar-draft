@@ -1,4 +1,4 @@
-import type { WorldObject } from "../interfaces/ar.types"
+import type { WorldObject } from "../shared/interfaces/ar.types"
 
 // Los objetos se posicionan relativos a la ubicación del usuario en tiempo real
 // Los offsets están en grados (~11m por 0.0001°)

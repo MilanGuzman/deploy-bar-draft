@@ -1,7 +1,8 @@
-import { ChatMessages } from '../components/ChatMessages'
-import { ChatInput } from '../components/ChatInput'
-import { useChatSession } from '../hooks/useChatSession'
-import { UsuariosPanel } from '../components/UsuariosPanel'
+import { ChatInput } from "../shared/components/ChatInput"
+import { ChatMessages } from "../shared/components/ChatMessages"
+import { UsuariosPanel } from "../shared/components/UsuariosPanel"
+import { useChatSession } from "../shared/hooks/useChatSession"
+
 
 const Chat = () => {
   const {

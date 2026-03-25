@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import type { UserCoords, WorldObject } from '../interfaces/ar.types'
-import { buildWorldObjects } from '../data/worldObjects'
-import { getDistanceMeters } from '../lib/geoUtils'
-import { VISIBILITY_RADIUS_METERS } from '../data/worldObjects'
+import { buildWorldObjects, VISIBILITY_RADIUS_METERS } from '../../data/worldObjects'
+import { getDistanceMeters } from '../../lib/geoUtils'
+
 
 interface UseGPSResult {
   userCoords: UserCoords | null

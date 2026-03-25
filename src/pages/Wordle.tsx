@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import Grid from '../components/Grid'
-import Keyboard from '../components/Keyboard'
+import Grid from '../shared/components/Grid';
+import Keyboard from '../shared/components/Keyboard';
+
 
 
 function Wordle() {

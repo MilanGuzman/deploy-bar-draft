@@ -1,11 +1,12 @@
-import { useState, useRef } from 'react'
-import type { SelectedObject } from '../interfaces/ar.types'
-import { useGPS } from '../hooks/useGPS'
-import { useCompass } from '../hooks/useCompass'
-import CameraFeed from '../components/CameraFeed'
-import AFrameScene from '../components/AFrameScene'
-import ARHud from '../components/ARHud'
-import ARStartScreen from '../components/ARStartScreen'
+import { useState, useRef } from "react";
+import type { SelectedObject } from "../shared/interfaces/ar.types";
+import { useCompass } from "../shared/hooks/useCompass";
+import AFrameScene from "../shared/components/AFrameScene";
+import ARHud from "../shared/components/ARHud";
+import ARStartScreen from "../shared/components/ARStartScreen";
+import CameraFeed from "../shared/components/CameraFeed";
+import { useGPS } from "../shared/hooks/useGPS";
+
 
 /**
  * ARScene — página principal de Realidad Aumentada.
@@ -17,15 +18,15 @@ import ARStartScreen from '../components/ARStartScreen'
  *   navbar → debe tener z-index ≥ 50 en tu layout para quedar encima de todo
  */
 export default function ARScene() {
-  const [started, setStarted]   = useState(false)
-  const [selected, setSelected] = useState<SelectedObject | null>(null)
+  const [started, setStarted] = useState(false);
+  const [selected, setSelected] = useState<SelectedObject | null>(null);
 
-  const { userCoords, nearbyObjects, error } = useGPS(started)
-  const { compassRef, compassReady }         = useCompass(started)
+  const { userCoords, nearbyObjects, error } = useGPS(started);
+  const { compassRef, compassReady } = useCompass(started);
 
   // Expone el valor actual de compassRef para el HUD (re-render cada frame no es necesario)
-  const compassDisplayRef = useRef<number>(0)
-  if (compassRef) compassDisplayRef.current = compassRef.current
+  const compassDisplayRef = useRef<number>(0);
+  if (compassRef) compassDisplayRef.current = compassRef.current;
 
   // ── Pantalla de inicio ──────────────────────────────────────
   if (!started) {
@@ -33,19 +34,19 @@ export default function ARScene() {
       <div style={wrapperStyle}>
         <ARStartScreen onStart={() => setStarted(true)} />
       </div>
-    )
+    );
   }
 
   // ── Error GPS ───────────────────────────────────────────────
   if (error) {
     return (
       <div style={{ ...wrapperStyle, ...centeredStyle }}>
-        <p style={{ color: '#fff', fontSize: 16 }}>⚠️ {error}</p>
-        <small style={{ color: 'rgba(255,255,255,0.5)', marginTop: 8 }}>
+        <p style={{ color: "#fff", fontSize: 16 }}>⚠️ {error}</p>
+        <small style={{ color: "rgba(255,255,255,0.5)", marginTop: 8 }}>
           Activa el GPS e intenta de nuevo
         </small>
       </div>
-    )
+    );
   }
 
   // ── Esperando GPS ───────────────────────────────────────────
@@ -53,9 +54,11 @@ export default function ARScene() {
     return (
       <div style={{ ...wrapperStyle, ...centeredStyle }}>
         <div style={spinnerStyle} />
-        <p style={{ color: '#fff', marginTop: 16 }}>Obteniendo ubicación GPS...</p>
+        <p style={{ color: "#fff", marginTop: 16 }}>
+          Obteniendo ubicación GPS...
+        </p>
       </div>
-    )
+    );
   }
 
   // ── Escena AR activa ────────────────────────────────────────
@@ -83,34 +86,34 @@ export default function ARScene() {
         onCloseSelected={() => setSelected(null)}
       />
     </div>
-  )
+  );
 }
 
 // ── Estilos del wrapper ──────────────────────────────────────────
 // position: relative (no fixed) para respetar el layout con navbar
 const wrapperStyle: React.CSSProperties = {
-  position: 'relative',
-  width: '100%',
-  height: 'calc(100vh - 50px)',
-   marginTop: '50px',
-  minHeight: '100vh',
-  background: 'linear-gradient(135deg, #0f0f1a, #1a0f2e)',
-  overflow: 'hidden',
-}
+  position: "relative",
+  width: "100%",
+  height: "calc(100vh - 50px)",
+  marginTop: "50px",
+  minHeight: "100vh",
+  background: "linear-gradient(135deg, #0f0f1a, #1a0f2e)",
+  overflow: "hidden",
+};
 
 const centeredStyle: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontFamily: 'sans-serif',
-}
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  fontFamily: "sans-serif",
+};
 
 const spinnerStyle: React.CSSProperties = {
   width: 40,
   height: 40,
-  border: '3px solid rgba(255,255,255,0.2)',
-  borderTop: '3px solid #fff',
-  borderRadius: '50%',
-  animation: 'spin 0.8s linear infinite',
-}
+  border: "3px solid rgba(255,255,255,0.2)",
+  borderTop: "3px solid #fff",
+  borderRadius: "50%",
+  animation: "spin 0.8s linear infinite",
+};

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { RealtimeChannel, Session } from "@supabase/supabase-js";
-import { supabase } from "../services/supabaseClient";
+import { supabase } from "../shared/services/supabaseClient";
 
 type ChatMessage = {
   message: string;

@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { TextStreamChatTransport } from 'ai'
-import { getMessageText } from '../lib/chat'
 import type { ChatMessage } from '../interfaces/chat'
+import { getMessageText } from '../../lib/chat'
 
 export const useChatSession = () => {
   const [input, setInput] = useState('')

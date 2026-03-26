@@ -4,7 +4,7 @@ import reels1 from "@/data/img/reels1.jpg";
 import reels2 from "@/data/img/reels2.jpg";
 import reels3 from "@/data/img/reels3.jpg";
 import reels4 from "@/data/img/reels4.jpg";
-
+import ReelsActionBar from "./ReelsActionBar";
 
 const reels = [
   { id: 1, title: "El Barcelona gana contra Levante 3-1", thumbnail: reels1 },
@@ -21,8 +21,30 @@ const ReelsFeed = () => {
   const current = reels[activeIndex];
   const next = reels[activeIndex + 1] ?? null;
 
+  type Key = "ArrowLeft" | "ArrowRight";
+
+  const keyHandlers: Record<Key, () => void> = {
+    ArrowLeft: () => setActiveIndex((current) => (current > 0 ? current - 1 : current)),
+    ArrowRight: () =>
+      setActiveIndex((current) => (current < reels.length - 1 ? current + 1 : current)),
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    const key = e.key as Key;
+
+    if (keyHandlers[key]) {
+      e.preventDefault();
+      keyHandlers[key]();
+    }
+  };
+
   return (
-    <div className="flex bg-brand-navy">
+    <div
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      className="flex bg-brand-navy"
+      style={{ outline: "none" }}
+    >
       <div className="w-full mt-24 py-8 px-4">
         <h2 className="text-white text-xl font-bold mb-6 px-2">Reels</h2>
 
@@ -52,22 +74,25 @@ const ReelsFeed = () => {
           </div>
 
           {/* CENTER (active) — full size, no fade */}
-          <div className="shrink-0 relative rounded-2xl overflow-hidden w-96 h-[620px] shadow-2xl shadow-black z-10 transition-all duration-300">
-            <img
-              src={current.thumbnail}
-              alt={current.title}
-              className="w-full h-full object-cover"
-            />
+          <div className="flex flex-col gap-y-5 items-center">
+            <div className="shrink-0 relative rounded-2xl overflow-hidden w-96 h-155 shadow-2xl shadow-black z-10 transition-all duration-300">
+              <img
+                src={current.thumbnail}
+                alt={current.title}
+                className="w-full h-full object-cover"
+              />
 
-            {/* Bottom gradient overlay */}
-            <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent" />
+              {/* Bottom gradient overlay */}
+              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent" />
 
-            {/* Title + Actions */}
-            <div className="absolute bottom-0 left-0 right-0 p-4">
-              <p className="text-white text-sm font-semibold mb-3 leading-snug">
-                {current.title}
-              </p>
+              {/* Title + Actions */}
+              <div className="absolute bottom-0 left-0 right-0 p-4">
+                <p className="text-white text-sm font-semibold mb-3 leading-snug">
+                  {current.title}
+                </p>
+              </div>
             </div>
+                <ReelsActionBar/>
           </div>
 
           {/* RIGHT (next) — faded, smaller, partially cut */}
@@ -95,22 +120,9 @@ const ReelsFeed = () => {
             )}
           </div>
         </div>
-
-        {/* Dot indicators
-      <div className="flex justify-center gap-2 mt-6">
-        {reels.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setActiveIndex(i)}
-            className={`rounded-full transition-all duration-300 ${
-              i === activeIndex ? "w-4 h-2 bg-white" : "w-2 h-2 bg-gray-600"
-            }`}
-          />
-        ))}
-      </div> */}
       </div>
     </div>
   );
-}
+};
 
 export default ReelsFeed;

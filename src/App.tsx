@@ -1,12 +1,12 @@
-import { Routes, Route } from "react-router-dom"
-import SportsApi from "./pages/SportsApi"
-import Layout from "./layouts/Layout"
-import Index from "./pages/Index"
-import Chat from "./pages/Chat"
-import WatchParty from "./pages/WatchParty";
-import Wordle from "./pages/Wordle"
-import Ra from "./pages/ra"
-import Reels from "./pages/Reels"
+import { Routes, Route } from "react-router-dom";
+import SportsApi from "./pages/SportsApi";
+import Layout from "./layouts/Layout";
+import Index from "./pages/Index";
+import Chat from "./pages/Chat";
+import WatchParty from "./features//WatchParty/pages/WatchParty";
+import Wordle from "./pages/Wordle";
+import Ra from "./pages/ra";
+import Reels from "./pages/Reels";
 
 function App() {
   return (

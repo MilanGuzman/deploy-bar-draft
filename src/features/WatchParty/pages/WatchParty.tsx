@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import type { RealtimeChannel, Session } from "@supabase/supabase-js";
-import { supabase } from "../shared/services/supabaseClient";
-
-type ChatMessage = {
-  message: string;
-  user_name?: string;
-  avatar?: string;
-  timestamp: string;
-};
+import { supabase } from "../../../shared/services/supabaseClient";
+import type { ChatMessage } from "../Types/chatType";
+import InfoCard from "../Components/InfoCard";
+import ChatHeader from "../Components/ChatHeader";
+import ChatMessageBubble from "../Components/ChatMessageBubble";
 
 const WatchParty = () => {
   const [session, setSession] = useState<Session | null>(null);
@@ -106,14 +103,6 @@ const WatchParty = () => {
     setNewMessage("");
   };
 
-  const formatTime = (isoString: string) => {
-    return new Date(isoString).toLocaleTimeString("en-us", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
-
   if (!session) {
     return (
       <div className="p-6 text-gray-700">
@@ -122,60 +111,33 @@ const WatchParty = () => {
     );
   } else {
     return (
-      <div className="w-full flex h-[calc(100vh-3rem)] justify-center items-start p-4 overflow-y-auto">
+      <div className="w-full flex h-[calc(100vh-3rem)] justify-center items-start p-4 overflow-y-auto bg-brand-navy">
+        <div className="border border-gray-700 max-w-6xl w-full min-h-150 rounded-lg">
+          <InfoCard
+            label="COMPETICIÓN"
+            title="UEFA Champions League"
+            subtitle="Jornada 26"
+          />
+          <InfoCard
+            label="ESTADIO"
+            title="Camp Nou"
+            subtitle="Barcelona, España"
+          />
+        </div>
         <div className="border border-gray-700 max-w-6xl w-full min-h-150 rounded-lg">
           {/* Header */}
-          <div className="flex justify-between h-20 border-b border-gray-700">
-            <div className="p-4">
-              <p className="text-gray-700">
-                Sesión iniciada como {session?.user?.user_metadata?.full_name}
-              </p>
-              <p className="text-gray-700 italic text-sm">
-                {usersOnline.length} usuarios en línea
-              </p>
-            </div>
-          </div>
-          {/* Chat Principal */}
+          <ChatHeader
+            fullName={session?.user?.user_metadata?.full_name}
+            usersOnline={usersOnline.length}
+          />
+          {/* Mensaje Chat */}
           <div className="p-4 flex flex-col overflow-y-auto h-125">
             {messages.map((msg) => (
-              <div
-                className={`my-2 flex w-full items-start ${
-                  msg?.user_name == session?.user?.user_metadata?.full_name
-                    ? "justify-end"
-                    : "justify-start"
-                }`}
-              >
-                {/* Nombre del usuario */}
-
-                <div className="flex flex-col w-full">
-                  {msg?.user_name !== session?.user?.user_metadata?.full_name && (
-                    <div className="text-xs opacity-75 pt-1 text-left">
-                      {msg?.user_name}
-                    </div>
-                  )}
-                  <div
-                    className={`p-1 max-w-[70%] rounded-xl ${
-                      msg?.user_name == session?.user?.user_metadata?.full_name
-                        ? "bg-blue-600 text-white ml-auto"
-                        : "bg-gray-300 text-gray-800 mr-auto"
-                    }`}
-                  >
-                    <p key={`${msg.timestamp}-${msg.user_name}`}>
-                      {msg.message}
-                    </p>
-                  </div>
-                  {/* Timestamp */}
-                  <div
-                    className={`text-xs opacity-75 pt-1 ${
-                      msg?.user_name == session?.user?.user_metadata?.full_name
-                        ? "text-right"
-                        : "text-left"
-                    }`}
-                  >
-                    {formatTime(msg.timestamp)}
-                  </div>
-                </div>
-              </div>
+              <ChatMessageBubble
+                key={`${msg.timestamp}-${msg.user_name}`}
+                message={msg}
+                currentUserName={session?.user?.user_metadata?.full_name}
+              />
             ))}
           </div>
           {/* Input Mensaje */}
@@ -188,7 +150,7 @@ const WatchParty = () => {
               onChange={(e) => setNewMessage(e.target.value)}
               type="text"
               placeholder="Participa en el chat!"
-              className="p-2 w-full bg-[#00000040] rounded-lg"
+              className="p-2 w-full text-gray-200 bg-[#00000040] rounded-lg"
             />
             <button className="mt-4 sm:mt-0 sm:ml-8 text-black bg-gray-200 hover:bg-gray-300 py-2 px-4 rounded-lg">
               Enviar

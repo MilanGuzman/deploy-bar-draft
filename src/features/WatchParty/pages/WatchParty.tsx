@@ -19,8 +19,14 @@ const WatchParty = () => {
   // Para ver las cosas que nos trae la sesión DEBUG
   console.log(session);
 
-  const { messages, newMessage, setNewMessage, sendMessage, chatContainerRef } =
-    useWatchPartyChat(session);
+  const {
+    messages,
+    newMessage,
+    setNewMessage,
+    usersOnline,
+    sendMessage,
+    chatContainerRef,
+  } = useWatchPartyChat(session);
 
   if (!session) {
     return (
@@ -40,7 +46,7 @@ const WatchParty = () => {
             awayTeamShort="CH"
             matchTime={20}
             location="Camp Nou"
-            fansWatching={4}
+            fansWatching={usersOnline.length}
           />
           <div className="flex gap-4 w-full mt-4">
             <InfoCard

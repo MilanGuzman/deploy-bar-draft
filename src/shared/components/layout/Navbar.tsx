@@ -8,7 +8,7 @@ const navItems = [
   { name: "Joc!",        path: "/wordle" },
   { name: "RA",          path: "/ra" },
   { name: "Reels",       path: "/reels" },
-  { name: "Watch Party", path: "/watchpartyhub" },
+  { name: "Watch Party", path: "/WatchParty" },
   { name: "Tienda",      path: "/tienda" },
   { name: "Perfil",      path: "/perfil" },
 ];

@@ -1,17 +1,23 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import Countdown from '../shared/components/Countdown'
 import { PrimaryButton, SecondaryButton } from '../shared/components/Buttons';
 import Noticias from '../shared/components/Noticias'
 import StatCard from '../shared/components/StatCard'
 import InfoCard from '../shared/components/InfoCard';
+import { useSession } from "../shared/hooks/useSession"
 
 function Home() {
+    const navigate = useNavigate()
+    const session = useSession();
+    const fullName = session?.user?.user_metadata?.full_name || "";
+    const name = fullName.split(" ")[0];
     const [category, setCategory] = useState<"var" | "fem" | null>(null);
     return (
         <>
             <section className="relative bg-cover bg-center min-h-screen flex items-center justify-center text-center bg-[url('https://www.fcbarcelona.com/photo-resources/2025/11/15/43dcea0d-71dc-414f-9bcc-4e827c927693/JCAG3702.jpg?width=3200&_gl=1*1t7pif5*_gcl_aw*R0NMLjE3NzMzNDE0MTcuQ2p3S0NBand5TW5OQmhCTkVpd0EtS2NndTVneXE2dEVQNGZldjVWZmNwa2dJRGZ0clpiZGxNZTVDZGNwTXo4UkNZUnFWVmZuM19GcW5Sb0NTNGdRQXZEX0J3RQ..*_gcl_dc*R0NMLjE3NzMzNDE0MTcuQ2p3S0NBand5TW5OQmhCTkVpd0EtS2NndTVneXE2dEVQNGZldjVWZmNwa2dJRGZ0clpiZGxNZTVDZGNwTXo4UkNZUnFWVmZuM19GcW5Sb0NTNGdRQXZEX0J3RQ..*_gcl_au*OTk4NjYyNjc0LjE3NzA5MjMxMDM.')]">
                 <div className="relative py-5 mt-30 text-white">
-                    <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 font-sans tracking-tight">Benvinguts al FC Barcelona!</h2>
+                    <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 font-sans tracking-tight">{session ? `Benvingut ${name}!` : "Benvinguts al FC Barcelona!"}</h2>
                 </div>
             </section>
 
@@ -27,7 +33,7 @@ function Home() {
                             chess_queen
                         </span>
                         </div>
-                        <SecondaryButton onClick={() => console.log("hola")} size="sm">Ver más</SecondaryButton>
+                        <SecondaryButton onClick={() => navigate("/watchpartyhub")} size="sm">Ver más</SecondaryButton>
                     </div>
                     </div>
                     <div className="flex justify-center my-15">
@@ -53,7 +59,7 @@ function Home() {
                     </div>
                 </div>
                 <img src='https://www.fcbarcelona.com/fcbarcelona/photo/2024/03/13/13a9d23d-c41b-4bf1-b6a8-ab5a4dfc3f3c/FCB_Oporto-035.jpg' className="w-full h-auto" />
-               <div className="relative flex justify-center my-10">
+               <div className="relative flex justify-center my-20">
                 <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-light text-brand-crimson">Més Que Un Club</h1>
                </div>
                <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 text-justify">
@@ -67,13 +73,14 @@ function Home() {
                     <h1 className="text-2xl md:text-3xl lg:text-4xl font-light">Tu Historia Comienza Aquí</h1>
                     <p className="text-xs md:text-sm text-brand-gray-mid">Únete al equipo blaugrana. Participa, interactúa y disfruta de tu club, todo en un mismo lugar.</p>
                     <div className="mt-6">
-                        <PrimaryButton onClick={() => console.log("hola")} size="lg">Registrarme</PrimaryButton>
+                        <PrimaryButton onClick={() => navigate("/login")} size="lg">Registrarme</PrimaryButton>
                     </div>
                 </div>
                 <div className="relative grid grid-cols-2 gap-10 mt-30 ">
                     <img src='src\data\img\fanBarca.jpeg' className="w-full h-auto" />
                     <div className="flex flex-col gap-10">
-                        <p className="text-2xl md:text-3xl lg:text-4xl font-light">“Era fan del Barça, pero solo del varonil. Entré a Més Que Un Club, me enganché con el equipo femenino, acumulé puntos — y gané un viaje al Camp Nou para verlas en vivo. Nunca lo hubiera imaginado.”</p>
+                        <hr className="border-brand-gray-light" />
+                        <p className="text-1xl md:text-3xl lg:text-4xl font-light">“Era fan del Barça, pero solo del varonil. Entré a Més Que Un Club, me enganché con el equipo femenino, acumulé puntos — y gané un viaje al Camp Nou para verlas en vivo. Nunca lo hubiera imaginado.”</p>
                         <div className="flex flex-col gap-1 leading-tight">
                             <p className="text-sm md:text-md font-medium">Carlos M.</p>
                             <p className="text-xs md:text-sm font-light text-brand-navy">Culé Mexicano</p>

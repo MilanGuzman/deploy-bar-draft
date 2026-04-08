@@ -38,7 +38,7 @@ const Countdown = ({ onCategoryLoad }: CountdownProps) => {
   }, [matchDate]);
 
   return (
-    <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-2">
       <div className="flex gap-6">
         {[
           { label: "días",     value: time.d },

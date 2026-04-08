@@ -14,8 +14,8 @@ function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<Index />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Index />} />
+        <Route path="/" element={<Home />} />
         <Route path="/sportsapi" element={<SportsApi />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/WatchParty" element={<WatchParty />} />

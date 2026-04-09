@@ -19,11 +19,13 @@ const logros = [
     titulo: "Racha de 10 días",
     descripcion: "",
     desbloqueado: true,
+    icono: "Nivel_1"
   },
   {
     titulo: "5 Predicciones",
     descripcion: "4/5 Correctas",
     desbloqueado: false,
+    icono: "Nivel_1"
   },
 ];
 

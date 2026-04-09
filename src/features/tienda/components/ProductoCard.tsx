@@ -9,13 +9,11 @@ export type Producto = {
   premium_only: boolean;
 };
 
-const TemporalImg ="";
-
 const ProductoCard = ({ producto }: { producto: Producto }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const imgSrc = producto.imagen?.trim() ? producto.imagen : TemporalImg;
-  const categoriaNombre = producto.categoria?.nombre ?? "Objeto";
+  const imgSrc = producto.imagen?.trim(); // Se usa trim para eliminar espacios en blanco
+  const categoriaNombre = producto.categoria?.nombre ?? "Objeto"; 
 
   return (
     <div

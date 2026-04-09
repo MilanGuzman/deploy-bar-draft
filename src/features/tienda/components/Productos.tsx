@@ -11,7 +11,7 @@ const supabaseKey =
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-function mapProducto(row: Record<string, unknown>) {
+function mapProducto(row: Record<string, unknown>) { // Mapea los datos de la fila a la estructura esperada por ProductoCard
   const categories = row.categories as { name?: string } | null | undefined;
   return {
     id: Number(row.id),
@@ -26,7 +26,7 @@ function mapProducto(row: Record<string, unknown>) {
 }
 
 const Productos = () => {
-  const [productos, setProductos] = useState<ReturnType<typeof mapProducto>[]>([]);
+  const [productos, setProductos] = useState<ReturnType<typeof mapProducto>[]>([]); // El tipo de productos se infiere a partir de la función mapProducto
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const Productos = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-6 px-20 pb-12">
         {productos.map((producto) => (
-          <ProductoCard key={producto.id} producto={producto} />
+          <ProductoCard key={producto.id} producto={producto} /> // Renderiza cada producto usando ProductoCard
         ))}
       </div>
     </div>

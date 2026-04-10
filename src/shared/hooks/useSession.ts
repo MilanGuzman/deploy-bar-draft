@@ -10,12 +10,25 @@ export function useSession() {
       setSession(s);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, next) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async(_event, next) => {
       setSession(next);
+
+      if (_event === "SIGNED_IN" && next?.user) {
+        const { id, email } = next.user;
+        const { error } = await supabase
+          .from("profiles")
+          .upsert({ id, email }, { onConflict: "id" });
+
+         if (error) console.error("Error guardando perfil:", error.message);
+
+      }
+
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  console.log(session?.user.email)
 
   return session;
 }

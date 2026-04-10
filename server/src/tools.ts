@@ -2,12 +2,12 @@ import { tool } from 'ai'
 import { z } from 'zod'
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.SUPABASE_URL2
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY2
+const supabaseUrl = process.env.VITE_SUPABASE_URL
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error(
-    'Faltan variables de Supabase'
+    'Faltan VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en .env (raíz del proyecto)'
   )
 }
 

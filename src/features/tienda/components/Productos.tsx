@@ -1,15 +1,6 @@
 import { useState, useEffect } from "react";
-import { createClient } from "@supabase/supabase-js";
 import ProductoCard from "./ProductoCard";
-
-const supabaseUrl =
-  import.meta.env.VITE_SUPABASE_URL2 ?? import.meta.env.VITE_SUPABASE_URL ?? "";
-const supabaseKey =
-  import.meta.env.VITE_SUPABASE_ANON_KEY2 ??
-  import.meta.env.VITE_SUPABASE_ANON_KEY ??
-  "";
-
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from "../../../shared/services/supabaseClient";
 
 function mapProducto(row: Record<string, unknown>) { // Mapea los datos de la fila a la estructura esperada por ProductoCard
   const categories = row.categories as { name?: string } | null | undefined;

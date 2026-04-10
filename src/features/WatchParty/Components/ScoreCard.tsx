@@ -21,6 +21,12 @@ const ScoreCard = ({
   fansWatching,
 }: ScoreCardProps) => {
   const formattedTime = `${String(matchTime).padStart(2, "0")}:00`;
+  let fansText: string;
+  if (fansWatching == 1) {
+    fansText = "fan participando";
+  } else {
+    fansText = "fans participando";
+  }
 
   return (
     <div className="border bg-brand-crimson rounded-3xl p-6">
@@ -62,7 +68,9 @@ const ScoreCard = ({
       <div className="mt-5 w-full rounded-xl bg-brand-crimsonlight/70 px-4 py-2">
         <div className="flex items-center justify-center gap-2 text-sm text-white">
           <Users size={14} />
-          <p>{fansWatching} fans participando</p>
+          <p>
+            {fansWatching} {fansText}
+          </p>
         </div>
       </div>
     </div>

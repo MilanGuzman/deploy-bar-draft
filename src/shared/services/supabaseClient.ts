@@ -13,11 +13,3 @@ export const supabase = createClient(
   supabaseUrl || "https://placeholder.supabase.co",
   supabaseAnonKey || "placeholder-key"
 );
-
-const supabaseUrl2 = import.meta.env.VITE_SUPABASE_URL2 ?? "";
-const supabaseAnonKey2 = import.meta.env.VITE_SUPABASE_ANON_KEY2 ?? "";
-
-export const supabase2 = createClient(
-  supabaseUrl2 || "https://placeholder.supabase.co",
-  supabaseAnonKey2 || "placeholder-key"
-);

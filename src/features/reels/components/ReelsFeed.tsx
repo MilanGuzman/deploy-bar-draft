@@ -1,5 +1,5 @@
 // ReelsSection.tsx
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import reels1 from "@/data/img/reels1.jpg";
 import reels2 from "@/data/img/reels2.jpg";
 import reels3 from "@/data/img/reels3.jpg";
@@ -8,6 +8,7 @@ import ReelsActionBar from "./ReelsActionBar";
 import { motion, type Transition } from "motion/react";
 import { fetchReels } from "../services/supabase";
 import type { VideoReel } from "../interfaces/VideoReel";
+import { Play, Volume2, VolumeX } from "lucide-react";
 
 const reels = [
   { id: 1, title: "El Barcelona gana contra Levante 3-1", thumbnail: reels1 },
@@ -76,6 +77,7 @@ const ReelsFeed = () => {
   // right now returns promise
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [muted, setMuted] = useState(true);
 
   const getPosition = (i: number) => {
     const diff = i - activeIndex;
@@ -124,8 +126,8 @@ const ReelsFeed = () => {
   }, []);
 
   useEffect(() => {
-    console.log(videos)
-  }, [videos])
+    console.log(videos);
+  }, [videos]);
 
   return (
     <div
@@ -144,21 +146,35 @@ const ReelsFeed = () => {
             const animateState = getAnimateState(i);
 
             return (
+              
               <motion.div
                 key={reel.id}
                 variants={variants}
                 animate={animateState}
                 transition={spring}
-                className="absolute cursor-pointer overflow-hidden rounded-2xl shadow-2xl shadow-black"
+                className="absolute overflow-hidden rounded-2xl shadow-2xl shadow-black group"
                 onClick={() => setActiveIndex(i)}
               >
+                {/* TODO: make whole motion div clickable as the pause button*/}
                 <img
                   src={reel.thumbnail_url}
                   alt={reel.caption}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent" />
-
+                <button className="absolute top-6 left-6 cursor-pointer" onClick={() => setMuted((prev) => !prev)}>
+                  {
+                    muted ?
+                    <VolumeX color="white" fill="white" className="w-8 h-8" />
+                    :
+                    <Volume2 color="white" fill="white" className="w-8 h-8" />
+                    
+                  }
+                </button>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition duration-300 ">
+                  <Play className="w-8 h-8 text-white fill-white" />
+                </div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent pointer-events-none" />
+                  
                 {/* Title — fades in only for center */}
                 <motion.div
                   className="absolute bottom-0 left-0 right-0 p-4"

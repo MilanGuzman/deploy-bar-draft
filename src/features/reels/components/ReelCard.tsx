@@ -87,17 +87,16 @@ const ReelCard = ({
   const [isPaused, setIsPaused] = useState(false);
 
   const togglePlay = () => {
-    const video = videoRef.current
+    const video = videoRef.current;
     if (!video) return;
 
-    if (video?.paused){
-        video.play();
-    }
-    else{
-        video?.pause();
+    if (video?.paused) {
+      video.play();
+    } else {
+      video?.pause();
     }
     setIsPaused((prev) => !prev);
-  }
+  };
 
   useEffect(() => {
     if (videoRef.current) {
@@ -105,7 +104,11 @@ const ReelCard = ({
     }
   }, [muted]);
 
-  
+  useEffect(() => {
+    if (position !== "center") {
+      setIsPaused(false);
+    }
+  }, [position]);
 
   return (
     <motion.div
@@ -119,8 +122,6 @@ const ReelCard = ({
         togglePlay();
       }}
     >
-      {/* TODO: make whole motion div clickable as the pause button*/}
-
       {position === "center" ? (
         <div>
           <video
@@ -130,7 +131,6 @@ const ReelCard = ({
             muted={muted}
             loop
             playsInline
-            controls
             controlsList="nofullscreen"
             style={{
               width: "100%",

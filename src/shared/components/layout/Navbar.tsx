@@ -4,12 +4,16 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const navItems = [
     { name: "Inicio", path: "/" },
+    { name: "Home", path: "/home"},
     { name: "Sports API", path: "/sportsapi" },
     { name: "ChatBot", path: "/chat" },
     { name: "Watch Party", path: "/WatchParty" },
     { name: "Wordle", path: "/wordle" },
     { name: "RA", path: "/ra" },
     { name: "Reels", path: "/reels" },
+    { name: "Perfil", path: "/perfil" },
+    { name: "Tienda", path: "/tienda" }
+
   ];
 
   return (

@@ -1,8 +1,9 @@
 type PremiumWindowPros = {
     onClose: () => void;
+    onSubscribe: () => void;
 }
 
-const PremiumWindow = ({ onClose }: PremiumWindowPros) => {
+const PremiumWindow = ({ onClose, onSubscribe }: PremiumWindowPros) => {
     return (
         <div
             className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
@@ -65,7 +66,7 @@ const PremiumWindow = ({ onClose }: PremiumWindowPros) => {
 
                     <div className="mt-auto space-y-3">
                         <button
-                            onClick={() => alert("Procesando suscripción...")}
+                            onClick={onSubscribe}
                             className="w-full bg-[#F5BF00] hover:bg-[#D4A400] text-[#004D98] font-bold py-3 rounded-full transition-colors shadow-md"
                         >
                             Suscribirse Ahora

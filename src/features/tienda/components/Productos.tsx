@@ -22,25 +22,62 @@ const Productos = () => {
   const [error, setError] = useState<string | null>(null);
   const [esPremium, setEsPremium] = useState(false);
   const [mostrarPremium, setMostrarPremium] = useState(false);
+  const [monedas, setMonedas] = useState<number>(0);
+  
 
   useEffect(() => {
-    if (!session?.user?.id) {
-      setEsPremium(false);
-      return;
-    }
+    const run = async () => {
+      if (!session?.user?.id) {
+        setEsPremium(false);
+        setMonedas(0);
+        return;
+      }
 
-    const checkPremium = async () => {
       const { data } = await supabase
         .from("profiles")
-        .select("membership")
+        .select("membership, monedas")
         .eq("id", session.user.id)
         .single();
 
       setEsPremium(Boolean(data?.membership));
+      setMonedas(Number(data?.monedas ?? 0));
     };
 
-    void checkPremium();
+    void run();
   }, [session]);
+
+  const handleComprar = async (producto: ReturnType<typeof mapProducto>) => {
+    if (!session?.user?.id) {
+      alert("Debes iniciar sesión para comprar.");
+      return;
+    }
+
+    if (monedas < producto.precio) {
+      alert(`No tienes monedas suficientes. Tienes ${monedas} monedas y el producto cuesta ${producto.precio}.`);
+      return;
+    }
+
+    // Descuenta las monedas
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .update({ monedas: monedas - producto.precio })
+      .eq("id", session.user.id);
+
+    if (updateError) {
+      alert("Error al procesar la compra.");
+      return;
+    }
+
+    // Registra la compra
+    await supabase.from("purchases").insert({
+      user_id: session.user.id,
+      product_id: producto.id,
+      amount: producto.precio,
+    });
+
+    setMonedas((prev) => prev - producto.precio); // Actualiza el estado local
+    alert(`¡Compra exitosa! Te quedan ${monedas - producto.precio} monedas.`);
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -94,12 +131,20 @@ const Productos = () => {
             producto={producto}
             esPremium={esPremium}
             onPremiumClick={() => setMostrarPremium(true)}
+            monedas={monedas}
+            onComprar={() => handleComprar(producto)} 
           />
         ))}
       </div>
 
       {mostrarPremium && (
-        <PremiumWindow onClose={() => setMostrarPremium(false)} />
+        <PremiumWindow
+          onClose={() => setMostrarPremium(false)}
+          onSubscribe={() => {
+            setMostrarPremium(false);
+            alert("Comprando");
+          }}
+        />
       )}
     </div>
   );

@@ -9,25 +9,26 @@ export type Producto = {
   premium: boolean;
 };
 
-type Props ={
+type Props = {
   producto: Producto;
   esPremium: boolean;
+  monedas: number;           
   onPremiumClick: () => void;
-}
-const ProductoCard = ({ producto, esPremium, onPremiumClick }: Props) => {
+  onComprar: () => void;     
+};
+
+const ProductoCard = ({ producto, esPremium, monedas, onPremiumClick, onComprar }: Props) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleComprarClick = () => {
     if (producto.premium && !esPremium) {
       onPremiumClick();
     } else {
-      alert("Comprando");
+      onComprar(); 
     }
-  }
+  };
 
-
-  const imgSrc = producto.imagen?.trim(); // Se usa trim para eliminar espacios en blanco
-  const categoriaNombre = producto.categoria?.nombre ?? "Objeto"; 
+  const sinMonedas = monedas < producto.precio;
 
   return (
     <div
@@ -35,17 +36,19 @@ const ProductoCard = ({ producto, esPremium, onPremiumClick }: Props) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <img src={imgSrc} alt={producto.nombre} className="w-full h-48 object-cover" />
-
+      <img src={producto.imagen?.trim()} alt={producto.nombre} className="w-full h-48 object-cover" />
       <div className="p-4">
-        <p className="text-gray-600">{categoriaNombre}</p>
+        <p className="text-gray-600">{producto.categoria?.nombre ?? "Objeto"}</p>
         <h2 className="text-lg font-bold">{producto.nombre}</h2>
-        <p className="text-xl font-bold text-[#A50044]">{producto.precio} Monedas</p>
+        <p className={`text-xl font-bold ${sinMonedas ? "text-gray-400" : "text-[#A50044]"}`}>
+          {producto.precio} Monedas
+        </p>
         {producto.premium && (
-          <span className="inline-block mt-1 text-xs font-semibold text-yellow-600 bg-yellow-100 px-2 py-0.5 rounded-full"> Premium </span>
+          <span className="inline-block mt-1 text-xs font-semibold text-yellow-600 bg-yellow-100 px-2 py-0.5 rounded-full">
+            Premium
+          </span>
         )}
       </div>
-
       <div className="absolute inset-0 px-10 flex items-center justify-center pointer-events-none">
         <button
           type="button"

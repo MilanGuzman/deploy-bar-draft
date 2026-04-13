@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSession } from "../../hooks/useSession";
+import  useSession  from "../../hooks/useSession";
+import { useProfile } from "../../hooks/useProfile";
 import { LoginButton } from "../Buttons";
 
 const navItems = [
@@ -8,15 +9,16 @@ const navItems = [
   { name: "Joc!",        path: "/wordle" },
   { name: "RA",          path: "/ra" },
   { name: "Reels",       path: "/reels" },
-  { name: "Watch Party", path: "/WatchParty" },
+  { name: "Watch Party", path: "/watchParty" },
+  { name: "Watch PartyHUB", path: "/watchPartyHUB" }, //eliminar solo es para pruebas
   { name: "Tienda",      path: "/tienda" },
   { name: "Perfil",      path: "/perfil" },
 ];
 
 const Navbar = () => {
   const session = useSession();
+  const profile = useProfile();
   const isLoggedIn = session !== null;
-  const coins = 120;
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -47,7 +49,7 @@ const Navbar = () => {
       {/* navbar */}
       <nav
         className={`fixed top-3 left-1/2 -translate-x-1/2 z-50 w-[95vw] max-w-3xl lg:max-w-5xl bg-white rounded-full border border-slate-200 shadow-md px-4 h-14 flex items-center justify-between  transition-all duration-300
-          ${isVisible ? "opacity-100" : "opacity-0"}`}
+          ${isVisible ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-4 pointer-events-none"}`}
       >
         {/* logo + links */}
         <div className="flex items-center gap-4 px-2">
@@ -72,10 +74,10 @@ const Navbar = () => {
           {isLoggedIn ? (
             <div className="flex items-center gap-1.5 rounded-full px-3 py-1">
               <span>🪙</span>
-              <span className="text-sm font-semibold">{coins} Monedas</span>
+              <span className="text-sm font-semibold">{profile?.monedas} Monedas</span>
             </div>
           ) : (
-            <LoginButton onClick={() => navigate("/")} size="sm">Iniciar Sesión</LoginButton>
+            <LoginButton onClick={() => navigate("/login")} size="sm">Iniciar Sesión</LoginButton>
           )}
 
           {/* boton menu */}

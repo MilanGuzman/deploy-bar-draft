@@ -1,6 +1,14 @@
 import PerfilUsuario from "../features/perfil/PerfilUsuario";
 import AmigosContainer from "../features/perfil/AmigosContainer";
 import LogrosContainer from "../features/perfil/LogrosContainer";
+import useSession  from "../shared/hooks/useSession"
+
+import { useUsuarioByName } from "../shared/hooks/useUsuario";
+import { useUsuarioLogros } from "../shared/hooks/useLogros";
+import { User } from "lucide-react";
+
+
+import { type Usuario } from "../lib/DummyAPI";
 
 
 const amigos = [
@@ -14,39 +22,61 @@ const amigos = [
   },
 ];
 
-const logros = [
+const logrosHardcoded = [
   {
-    titulo: "Racha de 10 días",
+    logro_id: 1,
+    nombre: "Racha de 10 días",
     descripcion: "",
     desbloqueado: true,
+    url_image: "Nivel_1"
   },
   {
-    titulo: "5 Predicciones",
+    logro_id: 2,
+    nombre: "5 Predicciones",
     descripcion: "4/5 Correctas",
     desbloqueado: false,
+    url_image: "Nivel_1"
   },
 ];
 
 
 function Perfil() {
-  return (
+  console.log("Perfil")
+  const session = useSession();
+  const fullName = session?.user?.user_metadata?.full_name || "";
+  const { usuario : Usuario } = useUsuarioByName(fullName);
+  const { logros : Logro } = useUsuarioLogros(Usuario?.id ?? "");
+  if (fullName == ""){
+    return (
     <div className="min-h-screen">
+      <div className="bg-[#002244] px-6 py-6">
+        <text>Inicie sesion para ver su perfil</text>
+      </div>
+    </div>
+    );
+  }
+  return (
+    
+    <div className="min-h-screen">
+      <div className="p-8 bg-[#002244]"></div>
       <div className="bg-[#002244] px-6 py-6">
         <div className="max-w-5xl mx-auto">
           <PerfilUsuario
-            username="pedroTrej5"
+            username= {Usuario?.nombre_usuario || "Usuario"}
             ranking={14}
             pais="Chile"
-            avatarUrl="https://i.pravatar.cc/150?img=12"
+            avatarUrl={Usuario?.url_avatar || "https://i.pravatar.cc/150?img=3"}
             onLogout={() => alert("Tu no mete cabra")}
             puntos={2400}
             logros={3}
             predicciones={4}
-            nivel={1}
-            xpActual={2}
+            nivel={Usuario?.nivel || 1}
+            xpActual={Usuario?.experiencia || 0}
             xpMax={4000}
+            logro={Usuario?.logro || ""}
           />
         </div>
+
       </div>
 
       <div className="bg-gray-100 px-6 py-8">
@@ -57,7 +87,7 @@ function Perfil() {
             onAddFriend={() => alert("Agregar amigo")}
           />
 
-          <LogrosContainer logros={logros} />
+          <LogrosContainer logros={Logro || logrosHardcoded} />
 
         </div>
       </div>

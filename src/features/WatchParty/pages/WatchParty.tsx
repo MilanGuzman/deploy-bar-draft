@@ -1,3 +1,4 @@
+import { useParams, Navigate } from "react-router-dom";
 import InfoCard from "../Components/InfoCard";
 import ChatHeader from "../Components/ChatHeader";
 import ChatMessageBubble from "../Components/ChatMessageBubble";
@@ -8,7 +9,14 @@ import ScoreCard from "../Components/ScoreCard";
 import PrediccionesPopulares from "../Components/PrediccionesPopulares";
 import { useMatch } from "../Hooks/UseMatchScore";
 
+const defaultPredicciones = [
+  { label: "Ganador", value: "FC Barcelona (68%)" },
+  { label: "Marcador más votado", value: "2 - 1" },
+  { label: "Primer goleador favorito", value: "Bonmati" },
+];
+
 const WatchParty = () => {
+  const { code } = useParams<{ code: string }>();
   const session = useSession();
   const { match: liveMatch, loading } = useMatch();
 
@@ -23,23 +31,11 @@ const WatchParty = () => {
 
   const matchMinute = liveMatch?.fixture.status.elapsed ?? 0;
 
-  const defaultPredicciones = [
-    { label: "Ganador", value: "FC Barcelona (68%)" },
-    { label: "Marcador más votado", value: "2 - 1" },
-    { label: "Primer goleador favorito", value: "Bonmati" },
-  ];
+  const { messages, newMessage, setNewMessage, usersOnline, sendMessage, chatContainerRef } = useWatchPartyChat(session);
 
-  // Para ver las cosas que nos trae la sesión DEBUG
-  console.log(session);
 
-  const {
-    messages,
-    newMessage,
-    setNewMessage,
-    usersOnline,
-    sendMessage,
-    chatContainerRef,
-  } = useWatchPartyChat(session);
+  // Si no hay código en la URL, redirigir al hub
+  if (!code) return <Navigate to="/watchPartyHUB" replace />;
 
   if (!session) {
     return (
@@ -95,10 +91,9 @@ const WatchParty = () => {
           />
         </div>
       </div>
+
       <div className="border border-brand-gray-light bg-brand-white max-w-6xl w-130 min-h-150 rounded-2xl overflow-hidden">
-        {/* Chat Header */}
-        <ChatHeader />
-        {/* Mensaje Chat */}
+        <ChatHeader roomCode={code} />
         <div
           ref={chatContainerRef}
           className="p-4 flex flex-col overflow-y-auto h-125 bg-brand-white"

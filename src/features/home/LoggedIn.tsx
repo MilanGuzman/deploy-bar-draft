@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Countdown from '../../shared/components/Countdown'
 import { SecondaryButton } from '../../shared/components/Buttons';
 import Noticias from '../../shared/components/Noticias'
-import { useSession } from "../../shared/hooks/useSession"
+import useSession  from "../../shared/hooks/useSession"
 import { useProfile } from "../../shared/hooks/useProfile"
 
 function LoggedIn() {

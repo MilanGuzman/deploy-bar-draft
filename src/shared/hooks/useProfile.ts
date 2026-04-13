@@ -1,7 +1,7 @@
 // src/hooks/useProfile.ts
 import { useEffect, useState } from 'react'
 import { supabase } from '../services/supabaseClient'
-import { useSession } from './useSession'
+import  useSession  from './useSession'
 
 interface Profile {
   monedas: number

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSession } from "../../hooks/useSession";
+import  useSession  from "../../hooks/useSession";
 import { useProfile } from "../../hooks/useProfile";
 import { LoginButton } from "../Buttons";
 
@@ -84,11 +84,29 @@ const Navbar = () => {
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden w-8 h-8 flex flex-col justify-center items-center gap-1.5 rounded-lg hover:bg-slate-200"
           >
-            {item.name}
-          </Link>
-        ))}
-      </div>
-    </nav>
+            <span className={`block h-0.5 w-5 bg-slate-700 transition-all duration-200 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
+            <span className={`block h-0.5 w-5 bg-slate-700 transition-all duration-200 ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`block h-0.5 w-5 bg-slate-700 transition-all duration-200 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+          </button>
+        </div>
+      </nav>
+
+      {/* menu */}
+      {menuOpen && isVisible && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 w-[90vw] max-w-sm bg-white rounded-2xl border border-slate-200 shadow-md p-3 flex flex-col gap-1 md:hidden">
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={() => setMenuOpen(false)}
+              className="hover:text-brand-crimson text-sm font-medium px-3 py-1.5 rounded-lg"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 

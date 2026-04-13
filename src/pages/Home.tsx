@@ -5,7 +5,7 @@ import { PrimaryButton, SecondaryButton } from '../shared/components/Buttons';
 import Noticias from '../shared/components/Noticias'
 import StatCard from '../shared/components/StatCard'
 import InfoCard from '../shared/components/InfoCard';
-import { useSession } from "../shared/hooks/useSession"
+import  useSession  from "../shared/hooks/useSession"
 
 function Home() {
     const navigate = useNavigate()

@@ -1,7 +1,7 @@
 import PerfilUsuario from "../features/perfil/PerfilUsuario";
 import AmigosContainer from "../features/perfil/AmigosContainer";
 import LogrosContainer from "../features/perfil/LogrosContainer";
-import { useSession } from "../shared/hooks/useSession"
+import useSession  from "../shared/hooks/useSession"
 
 const amigos = [
   {

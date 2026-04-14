@@ -1,11 +1,26 @@
 import express, { type Request, type Response } from 'express'
+import { readFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
 import {
   buildPredictionItems,
-  fallbackPredictionItems,
+  type PredictionItem,
   type PredictionApiResponse
 } from '../services/predictions'
 
 export const WATCHPARTY_PORT = Number(process.env.WATCHPARTY_PORT ?? 3001)
+
+const liveMatchDummyPath = resolve(process.cwd(), 'src/dummy/live-match.json')
+const predictionsDummyPath = resolve(process.cwd(), 'src/dummy/predictions.json')
+
+const readLiveMatchDummy = async (): Promise<unknown> => {
+  const content = await readFile(liveMatchDummyPath, 'utf-8')
+  return JSON.parse(content)
+}
+
+const readPredictionsDummy = async (): Promise<{ fixtureId: number | null; predictions: PredictionItem[] }> => {
+  const content = await readFile(predictionsDummyPath, 'utf-8')
+  return JSON.parse(content) as { fixtureId: number | null; predictions: PredictionItem[] }
+}
 
 export const startWatchpartyExpressServer = () => {
   const app = express()
@@ -15,7 +30,7 @@ export const startWatchpartyExpressServer = () => {
       const apiKey = process.env.API_FOOTBALL_KEY
 
       if (!apiKey) {
-        return res.status(500).json({ error: 'Missing API_FOOTBALL_KEY in environment' })
+        return res.json(await readLiveMatchDummy())
       }
 
       const response = await fetch('https://v3.football.api-sports.io/fixtures?live=all', {
@@ -27,16 +42,20 @@ export const startWatchpartyExpressServer = () => {
       if (!response.ok) {
         const body = await response.text()
         console.error('API-Football error:', response.status, body)
-        return res.status(502).json({ error: 'API-Football request failed', status: response.status })
+        return res.json(await readLiveMatchDummy())
       }
 
       const data = await response.json() as { response?: unknown[] }
       const match = data.response?.[0] || null
 
+      if (!match) {
+        return res.json(await readLiveMatchDummy())
+      }
+
       return res.json(match)
     } catch (err) {
       console.error('Error en /api/watchparty/live-match:', err)
-      return res.status(500).json({ error: String(err) })
+      return res.json(await readLiveMatchDummy())
     }
   })
 
@@ -45,7 +64,7 @@ export const startWatchpartyExpressServer = () => {
       const apiKey = process.env.API_FOOTBALL_KEY
 
       if (!apiKey) {
-        return res.status(500).json({ error: 'Missing API_FOOTBALL_KEY in environment' })
+        return res.json(await readPredictionsDummy())
       }
 
       const liveResponse = await fetch('https://v3.football.api-sports.io/fixtures?live=all', {
@@ -57,7 +76,7 @@ export const startWatchpartyExpressServer = () => {
       if (!liveResponse.ok) {
         const body = await liveResponse.text()
         console.error('API-Football live fixtures error:', liveResponse.status, body)
-        return res.status(502).json({ error: 'Live fixtures request failed', status: liveResponse.status })
+        return res.json(await readPredictionsDummy())
       }
 
       const liveData = await liveResponse.json() as {
@@ -66,7 +85,7 @@ export const startWatchpartyExpressServer = () => {
       const fixtureId = liveData.response?.[0]?.fixture?.id
 
       if (!fixtureId) {
-        return res.json({ fixtureId: null, predictions: fallbackPredictionItems() })
+        return res.json(await readPredictionsDummy())
       }
 
       // User requested odds endpoint; if it doesn't provide the needed fields, fallback to predictions endpoint.
@@ -93,7 +112,7 @@ export const startWatchpartyExpressServer = () => {
       if (!predictionsResponse.ok) {
         const body = await predictionsResponse.text()
         console.error('API-Football predictions error:', predictionsResponse.status, body)
-        return res.json({ fixtureId, predictions: fallbackPredictionItems() })
+        return res.json(await readPredictionsDummy())
       }
 
       const predictionData = await predictionsResponse.json() as PredictionApiResponse
@@ -102,7 +121,7 @@ export const startWatchpartyExpressServer = () => {
       return res.json({ fixtureId, predictions: predictionItems })
     } catch (err) {
       console.error('Error en /api/watchparty/predictions:', err)
-      return res.status(500).json({ error: String(err) })
+      return res.json(await readPredictionsDummy())
     }
   })
 

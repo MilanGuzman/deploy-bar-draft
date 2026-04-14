@@ -1,0 +1,17 @@
+{
+  "fixtureId": 999001,
+  "predictions": [
+    {
+      "label": "Equipo con más probabilidad",
+      "value": "Barcelona (64%)"
+    },
+    {
+      "label": "Marcador estimado",
+      "value": "Barcelona: 2 | Atletico Madrid: 0"
+    },
+    {
+      "label": "Probabilidad de empate",
+      "value": "22%"
+    }
+  ]
+}

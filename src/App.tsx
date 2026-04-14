@@ -3,7 +3,7 @@ import SportsApi from "./pages/SportsApi";
 import Layout from "./layouts/Layout";
 import Index from "./pages/Index";
 import Chat from "./pages/Chat";
-import WatchParty from "./pages/WatchParty";
+import WatchParty from "../src/features/WatchParty/pages/WatchParty";
 import WatchPartyHUB from "./pages/WatchPartyHUB/pages/WatchPartyPage";
 import Wordle from "./pages/Wordle";
 import Perfil from "./pages/Perfil";

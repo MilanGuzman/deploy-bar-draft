@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { WorldObject, UserCoords, SelectedObject } from '../interfaces/ar.types'
-import { getDistanceMeters, getBearing } from '../lib/geoUtils'
+import { getDistanceMeters, getBearing } from '../../lib/geoUtils'
 
 interface AFrameSceneProps {
   userCoords: UserCoords

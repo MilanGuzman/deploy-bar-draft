@@ -2,10 +2,10 @@ import { Calendar, MapPin, Users } from "lucide-react";
 type ScoreCardProps = {
   date: string;
   homeTeam: string;
-  homeTeamShort: string;
+  homeTeamScore: number;
   awayTeam: string;
-  awayTeamShort: string;
-  matchTime: number;
+  awayTeamScore: number;
+  matchTime: string;
   location: string;
   fansWatching: number;
 };
@@ -13,14 +13,19 @@ type ScoreCardProps = {
 const ScoreCard = ({
   date,
   homeTeam,
-  homeTeamShort,
+  homeTeamScore,
   awayTeam,
-  awayTeamShort,
+  awayTeamScore,
   matchTime,
   location,
   fansWatching,
 }: ScoreCardProps) => {
-  const formattedTime = `${String(matchTime).padStart(2, "0")}:00`;
+  let fansText: string;
+  if (fansWatching == 1) {
+    fansText = "fan participando";
+  } else {
+    fansText = "fans participando";
+  }
 
   return (
     <div className="border bg-brand-crimson rounded-3xl p-6">
@@ -39,7 +44,7 @@ const ScoreCard = ({
       <div className="flex justify-between items-end mx-20">
         <div>
           <div className="w-16 h-16 rounded-full bg-brand-crimsonlight flex items-center justify-center text-white font-bold text-2xl">
-            {homeTeamShort}
+            {homeTeamScore}
           </div>
           <p className="mt-3 text-base font-semibold text-white">{homeTeam}</p>
         </div>
@@ -48,12 +53,12 @@ const ScoreCard = ({
             vs
           </p>
           <p className="text-5xl leading-none font-bold tracking-[0.14em] text-white">
-            {formattedTime}
+            {matchTime}
           </p>
         </div>
         <div>
           <div className="w-16 h-16 rounded-full bg-brand-crimsonlight flex items-center justify-center text-white font-bold text-2xl">
-            {awayTeamShort}
+            {awayTeamScore}
           </div>
           <p className="mt-3 text-base font-semibold text-white">{awayTeam}</p>
         </div>
@@ -62,7 +67,9 @@ const ScoreCard = ({
       <div className="mt-5 w-full rounded-xl bg-brand-crimsonlight/70 px-4 py-2">
         <div className="flex items-center justify-center gap-2 text-sm text-white">
           <Users size={14} />
-          <p>{fansWatching} fans participando</p>
+          <p>
+            {fansWatching} {fansText}
+          </p>
         </div>
       </div>
     </div>

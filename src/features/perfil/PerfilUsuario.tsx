@@ -13,6 +13,8 @@ type PerfilUsuarioProps = {
   nivel: number;
   xpActual: number;
   xpMax: number;
+
+  logro:string;
 };
 
 export default function PerfilUsuario({
@@ -28,17 +30,24 @@ export default function PerfilUsuario({
   nivel,
   xpActual,
   xpMax,
+  logro
 }: PerfilUsuarioProps) {
   return (
     <div className="bg-[#002244] text-white p-6 rounded-2xl ">
       
       <div className="space-y-5">
- 
+        <div className="flex items-center justify-between gap-4">
           <img
             src={avatarUrl}
             alt="avatar"
             className="w-40 h-40 rounded-full object-cover"
-            />
+          />
+          <img
+            src={`src/assets/Logros/${logro}.png`}
+            alt="avatar"
+            className="w-40 h-40 object-cover rounded-lg"
+          />
+        </div>
         <div className="py-4 flex gap-14">
             <h2 className="text-4xl font-semibold">@{username}</h2>
             <button

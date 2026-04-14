@@ -1,10 +1,12 @@
 import LogroCard from "./LogroCard";
 
 type Logro = {
-  titulo: string;
+  logro_id: number;
+  nombre: string;
   descripcion: string;
-  iconoUrl?: string;
-  desbloqueado?: boolean;
+  url_image: string;
+  desbloqueado: boolean;
+  user_id: string;
 };
 
 type LogrosContainerProps = {

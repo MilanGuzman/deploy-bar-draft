@@ -1,10 +1,11 @@
-import "./loadEnv";
+import './loadEnv'
 import { Hono } from 'hono'
 import { serve } from '@hono/node-server'
 import { cors } from 'hono/cors'
 import { streamText } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
 import { dbTools } from './tools'
+import { startWatchpartyExpressServer } from './routes/watchparty'
 
 const ollama = createOpenAI({
   baseURL: process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434/v1',
@@ -15,10 +16,13 @@ const app = new Hono()
 
 app.use('*', cors())
 
+startWatchpartyExpressServer()
+
 // Devuelve usuarios directo de la BD, es para el recuadro debajo del chat
 app.get('/api/usuarios', async (c) => {
   try {
-    const data = await (dbTools.getUsuarios.execute as any)({ limit: 3 })
+    const executeGetUsuarios = dbTools.getUsuarios.execute as (args: { limit?: number }) => Promise<unknown>
+    const data = await executeGetUsuarios({ limit: 3 })
     return c.json({ usuarios: data })
   } catch (err) {
     console.error('Error en /api/usuarios:', err)

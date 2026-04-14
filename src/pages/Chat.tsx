@@ -9,7 +9,6 @@ const Chat = () => {
     input,
     setInput,
     messages,
-    error,
     isLoading,
     handleSubmit,
     getMessageText

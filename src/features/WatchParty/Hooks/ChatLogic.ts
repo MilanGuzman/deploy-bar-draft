@@ -3,71 +3,60 @@ import { supabase } from "../../../shared/services/supabaseClient";
 import type { RealtimeChannel, Session } from "@supabase/supabase-js";
 import type { ChatMessage } from "../Types/chatType";
 
-
-const useWatchPartyChat = (session: Session | null) => {
+const useWatchPartyChat = (session: Session | null, roomCode: string) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [usersOnline, setUsersOnline] = useState<string[]>([]);
-  const roomOneRef = useRef<RealtimeChannel | null>(null);
+  const roomRef = useRef<RealtimeChannel | null>(null);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
+  // Auto-scroll al último mensaje
   useEffect(() => {
-  if (chatContainerRef.current) {
-    chatContainerRef.current.scrollTop =
-      chatContainerRef.current.scrollHeight;
-  }
-}, [messages]);
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
+  // Canal dinámico por sala
   useEffect(() => {
-    if (!session?.user) {
-    return;
-  }
-    const roomOne = supabase.channel("room-one", {
+    if (!session?.user || !roomCode) return;
+
+    // Cada sala tiene su propio canal: "watchparty-ABC-1234"
+    const channel = supabase.channel(`watchparty-${roomCode}`, {
       config: {
         broadcast: { self: true },
-        presence: {
-          key: session?.user?.id,
-        },
+        presence: { key: session.user.id },
       },
     });
-    roomOneRef.current = roomOne;
 
-    roomOne.on("broadcast", { event: "message" }, (payload) => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        payload.payload as ChatMessage,
-      ]);
+    roomRef.current = channel;
+
+    channel.on("broadcast", { event: "message" }, (payload) => {
+      setMessages((prev) => [...prev, payload.payload as ChatMessage]);
     });
 
-    // Manejo de la presencia de usuario
-    roomOne.on("presence", { event: "sync" }, () => {
-      const state = roomOne.presenceState();
+    channel.on("presence", { event: "sync" }, () => {
+      const state = channel.presenceState();
       setUsersOnline(Object.keys(state));
     });
-    // Seguimiento de usuarios suscritos a la sala
-    roomOne.subscribe(async (status) => {
-      if (status == "SUBSCRIBED") {
-        await roomOne.track({
-          id: session?.user?.id,
-        });
+
+    channel.subscribe(async (status) => {
+      if (status === "SUBSCRIBED") {
+        await channel.track({ id: session.user.id });
       }
     });
 
     return () => {
-      roomOne.unsubscribe();
-      roomOneRef.current = null;
+      channel.unsubscribe();
+      roomRef.current = null;
     };
-  }, [session]);
+  }, [session, roomCode]); // se reconecta si cambia la sala
 
-  // send message
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!roomRef.current || !newMessage.trim()) return;
 
-    if (!roomOneRef.current || !newMessage.trim()) {
-      return;
-    }
-
-    await roomOneRef.current.send({
+    await roomRef.current.send({
       type: "broadcast",
       event: "message",
       payload: {
@@ -77,16 +66,11 @@ const useWatchPartyChat = (session: Session | null) => {
         timestamp: new Date().toISOString(),
       },
     });
+
     setNewMessage("");
   };
-  return {
-  messages,
-  newMessage,
-  setNewMessage,
-  usersOnline,
-  sendMessage,
-  chatContainerRef,
-};
+
+  return { messages, newMessage, setNewMessage, usersOnline, sendMessage, chatContainerRef };
 };
 
 export default useWatchPartyChat;

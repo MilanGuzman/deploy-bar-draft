@@ -1,0 +1,69 @@
+{
+  "fixture": {
+    "id": 999001,
+    "referee": "Mateu Lahoz",
+    "timezone": "UTC",
+    "date": "2026-04-14T19:00:00+00:00",
+    "timestamp": 1776193200,
+    "periods": {
+      "first": 1776193200,
+      "second": 1776196800
+    },
+    "venue": {
+      "id": 550,
+      "name": "Estadi Olimpic Lluis Companys",
+      "city": "Barcelona"
+    },
+    "status": {
+      "long": "Second Half",
+      "short": "2H",
+      "elapsed": 78,
+      "extra": null
+    }
+  },
+  "league": {
+    "id": 140,
+    "name": "La Liga",
+    "country": "Spain",
+    "logo": "https://media.api-sports.io/football/leagues/140.png",
+    "flag": "https://media.api-sports.io/flags/es.svg",
+    "season": 2026,
+    "round": "Regular Season - 31"
+  },
+  "teams": {
+    "home": {
+      "id": 529,
+      "name": "Barcelona",
+      "logo": "https://media.api-sports.io/football/teams/529.png",
+      "winner": true
+    },
+    "away": {
+      "id": 530,
+      "name": "Atletico Madrid",
+      "logo": "https://media.api-sports.io/football/teams/530.png",
+      "winner": false
+    }
+  },
+  "goals": {
+    "home": 2,
+    "away": 0
+  },
+  "score": {
+    "halftime": {
+      "home": 1,
+      "away": 0
+    },
+    "fulltime": {
+      "home": 2,
+      "away": 0
+    },
+    "extratime": {
+      "home": null,
+      "away": null
+    },
+    "penalty": {
+      "home": null,
+      "away": null
+    }
+  }
+}

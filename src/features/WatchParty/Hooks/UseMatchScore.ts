@@ -7,7 +7,7 @@ export const useMatch = () => {
 
   const getMatch = async () => {
     try {
-      const response = await fetch("/watchparty-api/api/live-match");
+      const response = await fetch("/api/watchparty/live-match");
       const data = (await response.json()) as LiveMatch | null;
       setMatch(data);
     } catch (error) {

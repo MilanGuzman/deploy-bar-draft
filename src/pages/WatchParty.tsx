@@ -9,13 +9,13 @@ import ScoreCard from "../features/WatchParty/Components/ScoreCard";
 import PrediccionesPopulares from "../features/WatchParty/Components/PrediccionesPopulares";
 import { useMatch } from "../features/WatchParty/Hooks/UseMatchScore";
 import { useMatchClock } from "../features/WatchParty/Hooks/useMatchClock";
+import { useMatchPredictions } from "../features/WatchParty/Hooks/useMatchPredictions";
 
 const WatchParty = () => {
   const { code } = useParams<{ code: string }>();
   const session = useSession();
   const { match: liveMatch, loading, error, fetchedAt } = useMatch();
-
-  const defaultPredicciones: { label: string; value: string }[] = [];
+  const { predictions } = useMatchPredictions();
 
   const matchDateLabel = liveMatch
     ? new Date(liveMatch.fixture.date).toLocaleDateString("es-ES", {
@@ -97,7 +97,7 @@ const WatchParty = () => {
         <div className="flex gap-4 w-full mt-4">
           <PrediccionesPopulares
             title="Predicciones populares"
-            predictions={defaultPredicciones}
+            predictions={predictions}
           />
         </div>
       </div>

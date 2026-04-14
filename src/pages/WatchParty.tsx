@@ -12,7 +12,7 @@ import { useMatch } from "../features/WatchParty/Hooks/UseMatchScore";
 const WatchParty = () => {
   const { code } = useParams<{ code: string }>();
   const session = useSession();
-  const { match: liveMatch, loading } = useMatch();
+  const { match: liveMatch, loading, error } = useMatch();
 
   const defaultPredicciones: { label: string; value: string }[] = [];
 
@@ -26,8 +26,14 @@ const WatchParty = () => {
     : "";
 
   // Canal dinámico según el código de sala
-  const { messages, newMessage, setNewMessage, usersOnline, sendMessage, chatContainerRef } =
-    useWatchPartyChat(session, code ?? "");
+  const {
+    messages,
+    newMessage,
+    setNewMessage,
+    usersOnline,
+    sendMessage,
+    chatContainerRef,
+  } = useWatchPartyChat(session, code ?? "");
 
   if (!code) return <Navigate to="/watchPartyHUB" replace />;
 
@@ -40,7 +46,17 @@ const WatchParty = () => {
   }
 
   if (loading) {
-    return <div className="p-6 text-gray-700">Cargando datos del partido...</div>;
+    return (
+      <div className="p-6 text-gray-700">Cargando datos del partido...</div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 text-red-600">
+        Error cargando partido en vivo: {error}
+      </div>
+    );
   }
 
   if (!liveMatch) {
@@ -94,7 +110,11 @@ const WatchParty = () => {
             />
           ))}
         </div>
-        <ChatInput value={newMessage} onChange={setNewMessage} onSubmit={sendMessage} />
+        <ChatInput
+          value={newMessage}
+          onChange={setNewMessage}
+          onSubmit={sendMessage}
+        />
       </div>
     </div>
   );

@@ -1,10 +1,13 @@
-import "./loadEnv";
+import { config as loadEnv } from 'dotenv'
 import { Hono } from 'hono'
 import { serve } from '@hono/node-server'
 import { cors } from 'hono/cors'
 import { streamText } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
 import { dbTools } from './tools'
+
+loadEnv()
+loadEnv({ path: new URL('../../.env', import.meta.url).pathname, override: false })
 
 const ollama = createOpenAI({
   baseURL: process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434/v1',
@@ -14,6 +17,25 @@ const ollama = createOpenAI({
 const app = new Hono()
 
 app.use('*', cors())
+
+// Endpoint aislado para obtener un partido en vivo desde API-Football
+app.get('/api/watchparty/live-match', async (c) => {
+  try {
+    const response = await fetch('https://v3.football.api-sports.io/fixtures?live=all', {
+      headers: {
+        'x-apisports-key': process.env.API_FOOTBALL_KEY as string
+      }
+    })
+
+    const data = await response.json() as { response?: unknown[] }
+    const match = data.response?.[0] || null
+
+    return c.json(match)
+  } catch (err) {
+    console.error('Error en /api/watchparty/live-match:', err)
+    return c.json({ error: String(err) }, 500)
+  }
+})
 
 // Devuelve usuarios directo de la BD, es para el recuadro debajo del chat
 app.get('/api/usuarios', async (c) => {

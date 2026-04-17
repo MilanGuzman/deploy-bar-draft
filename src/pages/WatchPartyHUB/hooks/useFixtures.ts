@@ -1,16 +1,9 @@
 // hooks/useFixtures.ts
 import { useState, useEffect } from "react";
+// 1. Importa la interfaz oficial aquí
+import type { Fixture } from "../interfaces/index.interfaces"; 
 
 const PROXY = "https://fcb-proxy.onrender.com";
-
-interface Fixture {
-  fixture_id: string;
-  category: "varonil" | "femenil";
-  date: string;         // mapped from datetime
-  homeTeam: string;     // mapped from home_team
-  awayTeam: string;     // mapped from away_team
-  competition: string;
-}
 
 interface RawFixture {
   fixture_id: string;
@@ -19,6 +12,8 @@ interface RawFixture {
   home_team: string;
   away_team: string;
   competition: string;
+  venue?: string; 
+  status?: string;
 }
 
 export function useFixtures() {
@@ -47,6 +42,8 @@ export function useFixtures() {
           homeTeam: f.home_team,
           awayTeam: f.away_team,
           competition: f.competition,
+          venue: f.venue ?? "Estadio no definido", 
+          status: f.status ?? "scheduled",
         }));
 
         setFixtures(mapped);

@@ -4,10 +4,12 @@ import { useWatchPartyModal } from "../hooks/useWatchPartyModal";
 import { useFixtures } from "../hooks/useFixtures";
 import useSession from "../../../features/WatchParty/Hooks/SessionLogic";
 
+
 export default function WatchPartyModal({ open, onClose }: WatchPartyModalProps) {
   const session = useSession();
-  const { fixtures, isLoading: fixturesLoading } = useFixtures();
 
+  const { fixtures, isLoading: fixturesLoading } = useFixtures();
+  
   const {
     step, form, roomCode, canSubmit, isLoading, error,
     setName, setFixtureId, setPrivacy,

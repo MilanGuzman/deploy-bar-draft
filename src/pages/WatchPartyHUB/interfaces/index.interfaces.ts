@@ -1,13 +1,14 @@
 // ── API Football ──────────────────────────────────────────────────────────
 
 export interface Fixture {
-  fixture_id: number;
+  fixture_id: string;
+  category: "varonil" | "femenil";
   date: string;
   homeTeam: string;
   awayTeam: string;
-  venue: string;
-  status: string;
   competition: string;
+  venue?: string;  
+  status?: string; 
 }
 
 // ── Supabase watch_parties ────────────────────────────────────────────────
